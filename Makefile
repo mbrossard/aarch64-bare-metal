@@ -42,3 +42,10 @@ run-elf: $(elf)
 		-chardev stdio,id=char0,mux=on \
 		-trace *load* \
 		-m 64 -smp 1 -kernel $(elf)
+
+debug: $(elf)
+	aarch64-elf-gdb -ex "target remote 127.0.0.1:1234" \
+		-ex "set disassemble-next-line on" $(elf)
+
+dump: $(elf)
+	$(objdump) -d $<
